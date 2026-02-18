@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/irbazalam/zotero-local-ai.git"
+    "url": "git+https://github.com/Raythere/Zotero-Infinity.git"
   },
-  "author": "irbazalam",
+  "author": "Raythere",
   "bugs": {
-    "url": "https://github.com/irbazalam/zotero-local-ai/issues"
+    "url": "https://github.com/Raythere/Zotero-Infinity/issues"
   },
-  "homepage": "https://github.com/irbazalam/zotero-local-ai#readme",
+  "homepage": "https://github.com/Raythere/Zotero-Infinity#readme",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "zotero-plugin serve",

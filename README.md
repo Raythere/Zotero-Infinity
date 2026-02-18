@@ -22,7 +22,7 @@ A free, privacy-first AI assistant for [Zotero](https://www.zotero.org/) that ru
 
 ### Option A: One-Click Installer (Windows, Recommended)
 
-1. Download **`ZoteroInfinity-Setup.exe`** from the [latest GitHub Release](https://github.com/irbazalam/zotero-local-ai/releases/latest)
+1. Download **`ZoteroInfinity-Setup.exe`** from the [latest GitHub Release](https://github.com/Raythere/Zotero-Infinity/releases/latest)
 2. Run the installer
 3. Open Zotero -- the AI Chat is ready to use
 
@@ -39,7 +39,7 @@ The installer automatically:
    ```bash
    ollama pull llama3.2:1b
    ```
-3. Download **`zotero-local-ai.xpi`** from the [latest GitHub Release](https://github.com/irbazalam/zotero-local-ai/releases/latest)
+3. Download **`zotero-local-ai.xpi`** from the [latest GitHub Release](https://github.com/Raythere/Zotero-Infinity/releases/latest)
 4. In Zotero: `Tools` > `Add-ons` > gear icon > `Install Add-on From File...` > select the `.xpi`
 5. Restart Zotero
 
@@ -79,8 +79,8 @@ The release workflow publishes `update.json` to a `release` tag so Zotero can fe
 1. **Clone and install:**
 
    ```bash
-   git clone https://github.com/irbazalam/zotero-local-ai.git
-   cd zotero-local-ai
+   git clone https://github.com/Raythere/Zotero-Infinity.git
+   cd Zotero-Infinity
    npm install
    ```
 
@@ -131,7 +131,7 @@ The installer `.exe` will be in `installer/output/`.
    git tag v3.x.x
    git push && git push --tags
    ```
-3. GitHub Actions will build and publish to [Releases](https://github.com/irbazalam/zotero-local-ai/releases)
+3. GitHub Actions will build and publish to [Releases](https://github.com/Raythere/Zotero-Infinity/releases)
 4. Each release includes:
    - `zotero-local-ai.xpi` — plugin (for users with Ollama)
    - `ZoteroInfinity-Setup-{version}.exe` — one-click installer (Windows)
