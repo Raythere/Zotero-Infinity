@@ -83,9 +83,7 @@ function buildSystemPrompt(papers: PaperContext[]): string {
       (p.year ? `Year: ${p.year}\n` : "") +
       (p.itemType ? `Type: ${p.itemType}\n` : "");
 
-    const abstractSection = p.abstract
-      ? `\nAbstract:\n${p.abstract}\n`
-      : "";
+    const abstractSection = p.abstract ? `\nAbstract:\n${p.abstract}\n` : "";
 
     const headerLen = header.length + abstractSection.length;
     const textBudget = Math.max(0, perPaperBudget - headerLen);
@@ -108,10 +106,7 @@ function buildSystemPrompt(papers: PaperContext[]): string {
  * Start a new chat session for the given papers.
  * Uses the provided sessionId to allow switching back later.
  */
-export function startChat(
-  papers: PaperContext[],
-  sessionId?: string,
-): void {
+export function startChat(papers: PaperContext[], sessionId?: string): void {
   const id = sessionId || `session-${Date.now()}`;
   const label =
     papers.length === 1
@@ -180,7 +175,8 @@ export function closeSession(id: string): void {
   if (_activeSessionId === id) {
     // Switch to the most recent remaining session, or clear
     const remaining = Array.from(_sessions.keys());
-    _activeSessionId = remaining.length > 0 ? remaining[remaining.length - 1] : "";
+    _activeSessionId =
+      remaining.length > 0 ? remaining[remaining.length - 1] : "";
   }
 }
 

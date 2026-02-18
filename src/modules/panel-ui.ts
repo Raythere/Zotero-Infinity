@@ -2,10 +2,7 @@ import * as ChatEngine from "./chat-engine";
 import * as OllamaAPI from "./ollama-api";
 import * as LibTools from "./library-tools";
 import * as ToolsDialog from "./tools-dialog";
-import {
-  getSelectedItems,
-  extractPaperContexts,
-} from "./pdf-extract";
+import { getSelectedItems, extractPaperContexts } from "./pdf-extract";
 
 declare const Zotero: any;
 
@@ -112,7 +109,8 @@ function applyPanelSize(panel: HTMLElement) {
   ].join(";");
 
   const size = _isCompact ? COMPACT_STYLE : EXPANDED_STYLE;
-  const display = panel.style.display === "none" ? "display:none;" : "display:flex;";
+  const display =
+    panel.style.display === "none" ? "display:none;" : "display:flex;";
   panel.setAttribute("style", base + ";" + size + display);
 }
 
@@ -210,17 +208,103 @@ const STYLES = {
     "flex-shrink: 0",
   ].join(";"),
 
-  body: ["flex:1", "display:flex", "flex-direction:column", "overflow:hidden"].join(";"),
-  messages: ["flex:1", "overflow-y:auto", "padding:10px 12px", "display:flex", "flex-direction:column", "gap:8px"].join(";"),
-  inputRow: ["display:flex", "padding:8px 12px", "gap:6px", "border-top:1px solid rgba(0,0,0,0.12)", "flex-shrink:0"].join(";"),
-  input: ["flex:1", "padding:6px 10px", "border:1px solid rgba(0,0,0,0.2)", "border-radius:6px", "font-size:12px", "font-family:inherit", "outline:none", "background:var(--material-background,#fff)", "color:var(--fill-primary,#333)"].join(";"),
-  sendBtn: ["padding:6px 12px", "border:none", "border-radius:6px", "background:#4a90d9", "color:#fff", "font-size:12px", "font-weight:600", "cursor:pointer", "white-space:nowrap"].join(";"),
-  closeBtn: ["border:none", "background:transparent", "cursor:pointer", "font-size:14px", "line-height:1", "padding:2px 6px", "color:var(--fill-primary,#333)"].join(";"),
-  userBubble: ["align-self:flex-end", "background:#4a90d9", "color:#fff", "padding:6px 10px", "border-radius:10px 10px 2px 10px", "max-width:85%", "white-space:pre-wrap", "word-break:break-word", "font-size:12px"].join(";"),
-  assistantBubble: ["align-self:flex-start", "background:var(--material-toolbar,#f0f0f0)", "color:var(--fill-primary,#333)", "padding:6px 10px", "border-radius:10px 10px 10px 2px", "max-width:85%", "white-space:pre-wrap", "word-break:break-word", "font-size:12px"].join(";"),
-  statusBar: ["padding:4px 12px", "font-size:10px", "color:rgba(0,0,0,0.45)", "border-top:1px solid rgba(0,0,0,0.08)", "flex-shrink:0", "text-align:center"].join(";"),
-  progressBar: ["width:100%", "height:4px", "background:rgba(0,0,0,0.1)", "border-radius:2px", "overflow:hidden", "margin:6px 0"].join(";"),
-  progressFill: ["height:100%", "background:#4a90d9", "border-radius:2px", "transition:width 0.3s", "width:0%"].join(";"),
+  body: [
+    "flex:1",
+    "display:flex",
+    "flex-direction:column",
+    "overflow:hidden",
+  ].join(";"),
+  messages: [
+    "flex:1",
+    "overflow-y:auto",
+    "padding:10px 12px",
+    "display:flex",
+    "flex-direction:column",
+    "gap:8px",
+  ].join(";"),
+  inputRow: [
+    "display:flex",
+    "padding:8px 12px",
+    "gap:6px",
+    "border-top:1px solid rgba(0,0,0,0.12)",
+    "flex-shrink:0",
+  ].join(";"),
+  input: [
+    "flex:1",
+    "padding:6px 10px",
+    "border:1px solid rgba(0,0,0,0.2)",
+    "border-radius:6px",
+    "font-size:12px",
+    "font-family:inherit",
+    "outline:none",
+    "background:var(--material-background,#fff)",
+    "color:var(--fill-primary,#333)",
+  ].join(";"),
+  sendBtn: [
+    "padding:6px 12px",
+    "border:none",
+    "border-radius:6px",
+    "background:#4a90d9",
+    "color:#fff",
+    "font-size:12px",
+    "font-weight:600",
+    "cursor:pointer",
+    "white-space:nowrap",
+  ].join(";"),
+  closeBtn: [
+    "border:none",
+    "background:transparent",
+    "cursor:pointer",
+    "font-size:14px",
+    "line-height:1",
+    "padding:2px 6px",
+    "color:var(--fill-primary,#333)",
+  ].join(";"),
+  userBubble: [
+    "align-self:flex-end",
+    "background:#4a90d9",
+    "color:#fff",
+    "padding:6px 10px",
+    "border-radius:10px 10px 2px 10px",
+    "max-width:85%",
+    "white-space:pre-wrap",
+    "word-break:break-word",
+    "font-size:12px",
+  ].join(";"),
+  assistantBubble: [
+    "align-self:flex-start",
+    "background:var(--material-toolbar,#f0f0f0)",
+    "color:var(--fill-primary,#333)",
+    "padding:6px 10px",
+    "border-radius:10px 10px 10px 2px",
+    "max-width:85%",
+    "white-space:pre-wrap",
+    "word-break:break-word",
+    "font-size:12px",
+  ].join(";"),
+  statusBar: [
+    "padding:4px 12px",
+    "font-size:10px",
+    "color:rgba(0,0,0,0.45)",
+    "border-top:1px solid rgba(0,0,0,0.08)",
+    "flex-shrink:0",
+    "text-align:center",
+  ].join(";"),
+  progressBar: [
+    "width:100%",
+    "height:4px",
+    "background:rgba(0,0,0,0.1)",
+    "border-radius:2px",
+    "overflow:hidden",
+    "margin:6px 0",
+  ].join(";"),
+  progressFill: [
+    "height:100%",
+    "background:#4a90d9",
+    "border-radius:2px",
+    "transition:width 0.3s",
+    "width:0%",
+  ].join(";"),
 } as const;
 
 // ── Session tab rendering ────────────────────────────────────────
@@ -250,7 +334,10 @@ function renderTabs(win: Window): void {
 
     const label = doc.createElement("span") as HTMLElement;
     label.textContent = session.label;
-    label.setAttribute("style", "overflow:hidden; text-overflow:ellipsis; max-width:110px;");
+    label.setAttribute(
+      "style",
+      "overflow:hidden; text-overflow:ellipsis; max-width:110px;",
+    );
     tab.appendChild(label);
 
     // Close button on each tab
@@ -319,7 +406,10 @@ export function ensurePanel(win: Window): HTMLElement {
   titleSpan.textContent = "AI Chat";
 
   const headerBtns = doc.createElement("div") as HTMLElement;
-  headerBtns.setAttribute("style", "display:flex; gap:3px; align-items:center;");
+  headerBtns.setAttribute(
+    "style",
+    "display:flex; gap:3px; align-items:center;",
+  );
 
   const expandBtn = doc.createElement("button") as HTMLElement;
   expandBtn.textContent = _isCompact ? "\u2922" : "\u2921";
@@ -350,8 +440,16 @@ export function ensurePanel(win: Window): HTMLElement {
   actionBar.setAttribute("style", STYLES.actionBar);
 
   const actionDefs = [
-    { label: "Save Note", title: "Save chat as Zotero note", handler: () => void handleSaveNote(win) },
-    { label: "Search Library", title: "Search across your entire library (Ctrl+Shift+F)", handler: () => ToolsDialog.openDialog(win) },
+    {
+      label: "Save Note",
+      title: "Save chat as Zotero note",
+      handler: () => void handleSaveNote(win),
+    },
+    {
+      label: "Search Library",
+      title: "Search across your entire library (Ctrl+Shift+F)",
+      handler: () => ToolsDialog.openDialog(win),
+    },
   ];
 
   for (const def of actionDefs) {
@@ -506,7 +604,11 @@ export async function autoOpenForPaper(win: Window): Promise<void> {
     if (!papers.length) {
       if (messagesEl) {
         messagesEl.innerHTML = "";
-        appendInfoBubble(win.document, messagesEl, "Open a paper to start chatting.");
+        appendInfoBubble(
+          win.document,
+          messagesEl,
+          "Open a paper to start chatting.",
+        );
       }
       return;
     }
@@ -540,7 +642,11 @@ async function refreshState(win: Window): Promise<void> {
     setState(win, "setup");
     const messagesEl = $(win.document, MESSAGES_ID);
     if (messagesEl) {
-      appendInfoBubble(win.document, messagesEl, `Connection check error: ${String(e)}`);
+      appendInfoBubble(
+        win.document,
+        messagesEl,
+        `Connection check error: ${String(e)}`,
+      );
     }
   }
 }
@@ -558,32 +664,53 @@ function setState(win: Window, state: PanelState): void {
   if (state === "setup") {
     messagesEl.innerHTML = "";
     appendInfoBubble(
-      doc, messagesEl,
+      doc,
+      messagesEl,
       "Waiting for Ollama...\n\nThe AI engine is starting up or is not installed yet. The plugin will auto-connect once Ollama is ready.",
     );
 
     // Spinner + status line
     const statusLine = doc.createElement("div") as HTMLElement;
     statusLine.id = "zotero-local-ai-setup-status";
-    statusLine.setAttribute("style", "text-align:center; padding:8px 0; font-size:11px; color:rgba(0,0,0,0.45);");
+    statusLine.setAttribute(
+      "style",
+      "text-align:center; padding:8px 0; font-size:11px; color:rgba(0,0,0,0.45);",
+    );
     statusLine.textContent = "Checking connection...";
     messagesEl.appendChild(statusLine);
 
     const checkBtn = doc.createElement("button") as HTMLElement;
     checkBtn.textContent = "Retry Now";
-    checkBtn.setAttribute("style", "display:block; margin:8px auto; padding:6px 16px; border:none; border-radius:6px; background:#4a90d9; color:#fff; font-size:12px; font-weight:600; cursor:pointer;");
+    checkBtn.setAttribute(
+      "style",
+      "display:block; margin:8px auto; padding:6px 16px; border:none; border-radius:6px; background:#4a90d9; color:#fff; font-size:12px; font-weight:600; cursor:pointer;",
+    );
     checkBtn.addEventListener("click", async () => {
       checkBtn.textContent = "Checking...";
       checkBtn.setAttribute("disabled", "true");
       statusLine.textContent = "Checking connection...";
-      try { await refreshState(win); } catch { checkBtn.textContent = "Retry Now"; checkBtn.removeAttribute("disabled"); }
+      try {
+        await refreshState(win);
+      } catch {
+        checkBtn.textContent = "Retry Now";
+        checkBtn.removeAttribute("disabled");
+      }
     });
     messagesEl.appendChild(checkBtn);
 
     const linkBtn = doc.createElement("button") as HTMLElement;
     linkBtn.textContent = "Download Ollama Manually";
-    linkBtn.setAttribute("style", "display:block; margin:6px auto; padding:4px 12px; border:1px solid rgba(0,0,0,0.2); border-radius:6px; background:transparent; color:var(--fill-primary,#333); font-size:11px; cursor:pointer;");
-    linkBtn.addEventListener("click", () => { try { Zotero.launchURL("https://ollama.com/download"); } catch { /* */ } });
+    linkBtn.setAttribute(
+      "style",
+      "display:block; margin:6px auto; padding:4px 12px; border:1px solid rgba(0,0,0,0.2); border-radius:6px; background:transparent; color:var(--fill-primary,#333); font-size:11px; cursor:pointer;",
+    );
+    linkBtn.addEventListener("click", () => {
+      try {
+        Zotero.launchURL("https://ollama.com/download");
+      } catch {
+        /* */
+      }
+    });
     messagesEl.appendChild(linkBtn);
 
     statusEl.textContent = "Ollama: connecting...";
@@ -596,48 +723,78 @@ function setState(win: Window, state: PanelState): void {
       try {
         const running = await OllamaAPI.isRunning();
         if (running) {
-          if (_autoRetryTimer) { clearInterval(_autoRetryTimer); _autoRetryTimer = null; }
+          if (_autoRetryTimer) {
+            clearInterval(_autoRetryTimer);
+            _autoRetryTimer = null;
+          }
           await refreshState(win);
         } else {
           const sl = $(doc, "zotero-local-ai-setup-status");
-          if (sl) sl.textContent = `Last checked: ${new Date().toLocaleTimeString()} — retrying...`;
+          if (sl)
+            sl.textContent = `Last checked: ${new Date().toLocaleTimeString()} — retrying...`;
         }
-      } catch { /* keep retrying */ }
+      } catch {
+        /* keep retrying */
+      }
     }, 5000);
   } else if (state === "ready") {
-    if (_autoRetryTimer) { clearInterval(_autoRetryTimer); _autoRetryTimer = null; }
+    if (_autoRetryTimer) {
+      clearInterval(_autoRetryTimer);
+      _autoRetryTimer = null;
+    }
     messagesEl.innerHTML = "";
-    appendInfoBubble(doc, messagesEl, "Ollama connected!\n\nSelect a paper and press Ctrl+T, or open a PDF \u2014 the chat will load automatically.\n\nUse \"Search Library\" above to search your library or tag papers.");
+    appendInfoBubble(
+      doc,
+      messagesEl,
+      'Ollama connected!\n\nSelect a paper and press Ctrl+T, or open a PDF \u2014 the chat will load automatically.\n\nUse "Search Library" above to search your library or tag papers.',
+    );
     statusEl.textContent = `Connected | ${ChatEngine.getModel()}`;
     if (inputEl) inputEl.disabled = true;
     if (sendBtn) sendBtn.disabled = true;
   } else if (state === "chat") {
-    if (_autoRetryTimer) { clearInterval(_autoRetryTimer); _autoRetryTimer = null; }
+    if (_autoRetryTimer) {
+      clearInterval(_autoRetryTimer);
+      _autoRetryTimer = null;
+    }
     renderChatHistory(win);
     renderTabs(win);
     statusEl.textContent = `${ChatEngine.getPapers().length} paper(s) | ${ChatEngine.getModel()}`;
-    if (inputEl) { inputEl.disabled = false; inputEl.focus(); }
+    if (inputEl) {
+      inputEl.disabled = false;
+      inputEl.focus();
+    }
     if (sendBtn) sendBtn.disabled = false;
   }
 }
 
 // ── Message rendering ────────────────────────────────────────────
 
-function appendInfoBubble(doc: Document, container: HTMLElement, text: string): void {
+function appendInfoBubble(
+  doc: Document,
+  container: HTMLElement,
+  text: string,
+): void {
   const bubble = doc.createElement("div");
   bubble.setAttribute("style", STYLES.assistantBubble);
   bubble.textContent = text;
   container.appendChild(bubble);
 }
 
-function appendUserBubble(doc: Document, container: HTMLElement, text: string): void {
+function appendUserBubble(
+  doc: Document,
+  container: HTMLElement,
+  text: string,
+): void {
   const bubble = doc.createElement("div");
   bubble.setAttribute("style", STYLES.userBubble);
   bubble.textContent = text;
   container.appendChild(bubble);
 }
 
-function appendAssistantBubble(doc: Document, container: HTMLElement): HTMLElement {
+function appendAssistantBubble(
+  doc: Document,
+  container: HTMLElement,
+): HTMLElement {
   const bubble = doc.createElement("div");
   bubble.setAttribute("style", STYLES.assistantBubble);
   container.appendChild(bubble);
@@ -738,7 +895,10 @@ async function handleSend(win: Window): Promise<void> {
   try {
     let firstToken = true;
     await ChatEngine.sendMessage(text, (token) => {
-      if (firstToken) { assistantBubble.textContent = ""; firstToken = false; }
+      if (firstToken) {
+        assistantBubble.textContent = "";
+        firstToken = false;
+      }
       assistantBubble.textContent += token;
       scrollToBottomIfNeeded(messagesEl);
     });
@@ -752,7 +912,9 @@ async function handleSend(win: Window): Promise<void> {
   } finally {
     _isGenerating = false;
     updateSendButton(doc, false);
-    if (statusEl) { statusEl.textContent = `${ChatEngine.getPapers().length} paper(s) | ${ChatEngine.getModel()}`; }
+    if (statusEl) {
+      statusEl.textContent = `${ChatEngine.getPapers().length} paper(s) | ${ChatEngine.getModel()}`;
+    }
     scrollToBottomIfNeeded(messagesEl);
   }
 }
@@ -775,7 +937,11 @@ export async function startChatWithSelected(win: Window): Promise<void> {
     const messagesEl = $(win.document, MESSAGES_ID);
     if (messagesEl) {
       messagesEl.innerHTML = "";
-      appendInfoBubble(win.document, messagesEl, "No items selected.\n\nSelect one or more items in your library, then press Ctrl+T.");
+      appendInfoBubble(
+        win.document,
+        messagesEl,
+        "No items selected.\n\nSelect one or more items in your library, then press Ctrl+T.",
+      );
     }
     return;
   }
@@ -797,17 +963,31 @@ export async function startChatWithSelected(win: Window): Promise<void> {
   const statusEl = $(win.document, STATUS_ID);
   if (messagesEl) {
     messagesEl.innerHTML = "";
-    appendInfoBubble(win.document, messagesEl, `Loading ${items.length} item(s)...`);
+    appendInfoBubble(
+      win.document,
+      messagesEl,
+      `Loading ${items.length} item(s)...`,
+    );
   }
   if (statusEl) statusEl.textContent = "Loading papers...";
 
   try {
     const running = await OllamaAPI.isRunning();
-    if (!running) { setState(win, "setup"); return; }
+    if (!running) {
+      setState(win, "setup");
+      return;
+    }
 
     const papers = await extractPaperContexts(items);
     if (!papers.length) {
-      if (messagesEl) { messagesEl.innerHTML = ""; appendInfoBubble(win.document, messagesEl, "Could not extract content from the selected items."); }
+      if (messagesEl) {
+        messagesEl.innerHTML = "";
+        appendInfoBubble(
+          win.document,
+          messagesEl,
+          "Could not extract content from the selected items.",
+        );
+      }
       return;
     }
 
@@ -816,7 +996,10 @@ export async function startChatWithSelected(win: Window): Promise<void> {
     setState(win, "chat");
   } catch (e: any) {
     Zotero.debug(`[zotero-local-ai] startChatWithSelected error: ${String(e)}`);
-    if (messagesEl) { messagesEl.innerHTML = ""; appendInfoBubble(win.document, messagesEl, `Error: ${String(e)}`); }
+    if (messagesEl) {
+      messagesEl.innerHTML = "";
+      appendInfoBubble(win.document, messagesEl, `Error: ${String(e)}`);
+    }
   }
 }
 
@@ -826,12 +1009,18 @@ async function handleSaveNote(win: Window): Promise<void> {
   const session = ChatEngine.getActiveSession();
   if (!session || session.messages.length <= 1) {
     const messagesEl = $(win.document, MESSAGES_ID);
-    if (messagesEl) appendInfoBubble(win.document, messagesEl, "No conversation to save yet.");
+    if (messagesEl)
+      appendInfoBubble(
+        win.document,
+        messagesEl,
+        "No conversation to save yet.",
+      );
     return;
   }
 
   const messagesEl = $(win.document, MESSAGES_ID);
-  if (messagesEl) appendInfoBubble(win.document, messagesEl, "Saving chat as note...");
+  if (messagesEl)
+    appendInfoBubble(win.document, messagesEl, "Saving chat as note...");
 
   try {
     // Try to attach to the first paper's parent item
@@ -839,16 +1028,29 @@ async function handleSaveNote(win: Window): Promise<void> {
     const parentId = items.length > 0 ? items[0].id : null;
     await LibTools.saveChatAsNote(parentId, session.papers, session.messages);
     if (messagesEl) {
-      appendInfoBubble(win.document, messagesEl, "Chat saved as a Zotero note!");
+      appendInfoBubble(
+        win.document,
+        messagesEl,
+        "Chat saved as a Zotero note!",
+      );
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
   } catch (e: any) {
     Zotero.debug(`[zotero-local-ai] saveNote error: ${String(e)}`);
-    if (messagesEl) appendInfoBubble(win.document, messagesEl, `Error saving note: ${String(e)}`);
+    if (messagesEl)
+      appendInfoBubble(
+        win.document,
+        messagesEl,
+        `Error saving note: ${String(e)}`,
+      );
   }
 }
 
-export function updateSetupProgress(win: Window, message: string, percent?: number): void {
+export function updateSetupProgress(
+  win: Window,
+  message: string,
+  percent?: number,
+): void {
   const messagesEl = $(win.document, MESSAGES_ID);
   const statusEl = $(win.document, STATUS_ID);
   if (messagesEl) {
@@ -858,7 +1060,10 @@ export function updateSetupProgress(win: Window, message: string, percent?: numb
       const barContainer = win.document.createElement("div") as HTMLElement;
       barContainer.setAttribute("style", STYLES.progressBar);
       const fill = win.document.createElement("div") as HTMLElement;
-      fill.setAttribute("style", STYLES.progressFill + `;width:${Math.min(100, percent)}%`);
+      fill.setAttribute(
+        "style",
+        STYLES.progressFill + `;width:${Math.min(100, percent)}%`,
+      );
       barContainer.appendChild(fill);
       messagesEl.appendChild(barContainer);
     }

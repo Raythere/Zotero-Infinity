@@ -102,9 +102,9 @@ async function extractZip(zipPath: string, destDir: string): Promise<void> {
     "open",
   );
 
-  const zipFile = Components.classes["@mozilla.org/file/local;1"].createInstance(
-    Components.interfaces.nsIFile,
-  );
+  const zipFile = Components.classes[
+    "@mozilla.org/file/local;1"
+  ].createInstance(Components.interfaces.nsIFile);
   zipFile.initWithPath(zipPath);
 
   const reader = new ZipReader(zipFile);
@@ -196,15 +196,19 @@ export async function install(
       // Clean up zip
       try {
         await IOUtils.remove(downloadDest);
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
     } else if (url.endsWith(".tgz")) {
       // For tgz, use system tar
       if (onProgress) onProgress("Extracting...", 100);
       try {
-        await Zotero.Utilities.Internal.exec(
-          "/bin/tar",
-          ["xzf", downloadDest, "-C", getBinDir()],
-        );
+        await Zotero.Utilities.Internal.exec("/bin/tar", [
+          "xzf",
+          downloadDest,
+          "-C",
+          getBinDir(),
+        ]);
         await IOUtils.remove(downloadDest);
       } catch (e) {
         Zotero.debug(`[zotero-local-ai] tar extract error: ${String(e)}`);
@@ -254,9 +258,9 @@ export async function startServer(): Promise<boolean> {
     const modelsDir = PathUtils.join(getDataDir(), "models");
     await ensureDir(modelsDir);
 
-    const env = Components.classes["@mozilla.org/process/environment;1"]?.getService(
-      Components.interfaces.nsIEnvironment,
-    );
+    const env = Components.classes[
+      "@mozilla.org/process/environment;1"
+    ]?.getService(Components.interfaces.nsIEnvironment);
     if (env) {
       env.set("OLLAMA_MODELS", modelsDir);
     }

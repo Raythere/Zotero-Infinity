@@ -136,7 +136,10 @@ function registerToolbarButton(win: Window) {
 
     btn.id = TOOLBAR_BTN_ID;
     btn.setAttribute("label", "AI Chat");
-    btn.setAttribute("tooltiptext", "Zotero Infinity – Chat with your papers (Ctrl+T)");
+    btn.setAttribute(
+      "tooltiptext",
+      "Zotero Infinity – Chat with your papers (Ctrl+T)",
+    );
     btn.setAttribute("class", "zotero-tb-button");
     const iconUrl = `chrome://${addon.data.config.addonRef}/content/icons/favicon@0.5x.png`;
     try {
@@ -224,7 +227,7 @@ function unregisterToolbarButton() {
 }
 
 // ── Tab watcher (auto-open panel when user opens a paper) ────────
-let _tabSelectListener: any = null;
+const _tabSelectListener: any = null;
 
 function registerTabWatcher(win: Window) {
   if ((win as any).__zoteroLocalAITabWatcher) return;
@@ -234,7 +237,9 @@ function registerTabWatcher(win: Window) {
       // Check if a reader tab is now active (user opened a PDF)
       const reader = (Zotero as any).Reader?._readers?.[0];
       if (reader) {
-        Zotero.debug("[zotero-local-ai] PDF reader detected, auto-opening panel");
+        Zotero.debug(
+          "[zotero-local-ai] PDF reader detected, auto-opening panel",
+        );
         void PanelUI.autoOpenForPaper(win);
       }
     } catch (e) {
@@ -247,7 +252,9 @@ function registerTabWatcher(win: Window) {
   if (tabbox) {
     tabbox.addEventListener("select", handler);
     (win as any).__zoteroLocalAITabWatcher = handler;
-    Zotero.debug("[zotero-local-ai] Tab watcher registered on zotero-view-tabbox");
+    Zotero.debug(
+      "[zotero-local-ai] Tab watcher registered on zotero-view-tabbox",
+    );
     return;
   }
 
@@ -287,7 +294,9 @@ async function initializeOllama(win: Window): Promise<void> {
 
     // Ollama not running -- show manual setup instructions
     // (auto-install is attempted but may fail in Zotero sandbox)
-    Zotero.debug("[zotero-local-ai] Ollama not running, showing setup instructions");
+    Zotero.debug(
+      "[zotero-local-ai] Ollama not running, showing setup instructions",
+    );
   } catch (e) {
     Zotero.debug(`[zotero-local-ai] initializeOllama error: ${String(e)}`);
   }

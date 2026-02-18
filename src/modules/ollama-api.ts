@@ -73,9 +73,7 @@ export async function listModels(): Promise<OllamaModel[]> {
 /** Check if a specific model is available locally. */
 export async function hasModel(name: string): Promise<boolean> {
   const models = await listModels();
-  return models.some(
-    (m) => m.name === name || m.name.startsWith(name + ":"),
-  );
+  return models.some((m) => m.name === name || m.name.startsWith(name + ":"));
 }
 
 /**

@@ -27,6 +27,7 @@ A free, privacy-first AI assistant for [Zotero](https://www.zotero.org/) that ru
 3. Open Zotero -- the AI Chat is ready to use
 
 The installer automatically:
+
 - Installs [Ollama](https://ollama.com/) (the local AI engine) if not already present
 - Installs the Zotero plugin into your Zotero profile
 - Downloads the AI model (~700 MB)

@@ -79,9 +79,7 @@ export function getItemMetadata(item: any): Omit<PaperContext, "text"> {
 }
 
 /** Extract full paper context (metadata + PDF text) from one Zotero item. */
-export async function extractPaperContext(
-  item: any,
-): Promise<PaperContext> {
+export async function extractPaperContext(item: any): Promise<PaperContext> {
   const meta = getItemMetadata(item);
   const pdfs = getPdfAttachments(item);
 
