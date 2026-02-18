@@ -14,3 +14,8 @@ tsconfig.tsbuildinfo
 .scaffold
 build
 logs
+
+# Installer build artifacts
+installer/dist/
+installer/output/
+OllamaSetup.exe

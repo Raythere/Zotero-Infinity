@@ -1,24 +1,24 @@
 {
-  "name": "zotero-plugin-template",
+  "name": "zotero-infinity",
   "type": "module",
   "version": "3.1.0",
-  "description": "Zotero Plugin Template",
+  "description": "Zotero Infinity - Local AI assistant for Zotero (Ollama)",
   "config": {
-    "addonName": "Zotero Plugin Template",
-    "addonID": "addontemplate@euclpts.com",
-    "addonRef": "addontemplate",
-    "addonInstance": "AddonTemplate",
-    "prefsPrefix": "extensions.zotero.addontemplate"
+    "addonName": "Zotero Infinity",
+    "addonID": "zotero-local-ai@irbaz.dev",
+    "addonRef": "zoteroLocalAI",
+    "addonInstance": "ZoteroLocalAI",
+    "prefsPrefix": "extensions.zotero.zoterolocalai"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/windingwind/zotero-plugin-template.git"
+    "url": "git+https://github.com/irbazalam/zotero-local-ai.git"
   },
-  "author": "windingwind",
+  "author": "irbazalam",
   "bugs": {
-    "url": "https://github.com/windingwind/zotero-plugin-template/issues"
+    "url": "https://github.com/irbazalam/zotero-local-ai/issues"
   },
-  "homepage": "https://github.com/windingwind/zotero-plugin-template#readme",
+  "homepage": "https://github.com/irbazalam/zotero-local-ai#readme",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "zotero-plugin serve",

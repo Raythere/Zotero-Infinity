@@ -11,11 +11,126 @@ permissions:
   pull-requests: write
 
 jobs:
+  build-plugin:
+    runs-on: ubuntu-latest
+    outputs:
+      xpi-name: ${{ steps.find-xpi.outputs.name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Find XPI
+        id: find-xpi
+        run: |
+          XPI=$(ls .scaffold/build/*.xpi | head -1)
+          echo "path=$XPI" >> $GITHUB_OUTPUT
+          echo "name=$(basename $XPI)" >> $GITHUB_OUTPUT
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: xpi
+          path: ${{ steps.find-xpi.outputs.path }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: update-manifests
+          path: .scaffold/build/update*.json
+
+  build-installer:
+    runs-on: windows-latest
+    needs: build-plugin
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Prepare installer dist
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path installer\dist -Force | Out-Null
+          New-Item -ItemType Directory -Path installer\output -Force | Out-Null
+          $xpi = Get-ChildItem -Path .scaffold\build\*.xpi | Select-Object -First 1
+          Copy-Item $xpi.FullName installer\dist\zotero-local-ai.xpi
+
+      - name: Download Ollama installer
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://ollama.com/download/OllamaSetup.exe" -OutFile installer\dist\OllamaSetup.exe -UseBasicParsing
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          choco install innosetup -y --no-progress
+          echo "C:\Program Files (x86)\Inno Setup 6" | Out-File -Append -Encoding utf8 $env:GITHUB_PATH
+
+      - name: Compile installer
+        shell: pwsh
+        run: |
+          iscc installer\setup.iss
+
+      - name: Find installer EXE
+        id: find-exe
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem -Path installer\output\*.exe | Select-Object -First 1
+          echo "path=$($exe.FullName)" >> $env:GITHUB_OUTPUT
+          echo "name=$($exe.Name)" >> $env:GITHUB_OUTPUT
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: installer
+          path: ${{ steps.find-exe.outputs.path }}
+
   create-release:
-    uses: zotero-plugin-dev/workflows/.github/workflows/release-plugin.yml@main
-    # You can customize any of the inputs here.
-    # If you omit an input, its default value will be used.
-    with:
-      build: "npm run build"
-      release: "npm run release"
-    secrets: inherit
+    runs-on: ubuntu-latest
+    needs: [build-plugin, build-installer]
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: xpi
+          path: artifacts/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: installer
+          path: artifacts/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: update-manifests
+          path: artifacts/update/
+
+      - name: Create versioned GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            artifacts/*.xpi
+            artifacts/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create or update release manifest (for plugin auto-updates)
+        run: |
+          # Host update.json on 'release' tag so Zotero can check for plugin updates.
+          # When you bump the version, users only need to update the plugin; Ollama stays installed.
+          if gh release view release --repo ${{ github.repository }} 2>/dev/null; then
+            gh release upload release artifacts/update/update.json artifacts/update/update-beta.json --repo ${{ github.repository }} --clobber
+          else
+            gh release create release artifacts/update/update.json artifacts/update/update-beta.json --repo ${{ github.repository }} --title "Release Manifest" --notes "Hosts update.json for Zotero plugin auto-updates. Do not delete."
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
