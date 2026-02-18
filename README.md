@@ -76,12 +76,26 @@ The release workflow publishes `update.json` to a `release` tag so Zotero can fe
 
 ### Development
 
-```bash
-git clone https://github.com/irbazalam/zotero-local-ai.git
-cd zotero-local-ai
-npm install
-npm start
-```
+1. **Clone and install:**
+
+   ```bash
+   git clone https://github.com/irbazalam/zotero-local-ai.git
+   cd zotero-local-ai
+   npm install
+   ```
+
+2. **Configure Zotero paths** (required for `npm start` to launch Zotero):
+   - Copy `.env.example` to `.env`
+   - Edit `.env` and set:
+     - `ZOTERO_PLUGIN_ZOTERO_BIN_PATH` — path to `Zotero.exe` (e.g. `C:\Program Files\Zotero\Zotero.exe`)
+     - `ZOTERO_PLUGIN_PROFILE_PATH` — path to your Zotero profile folder (e.g. `C:\Users\YourName\AppData\Roaming\Zotero\Zotero\Profiles\xxxxx.default`)
+   - To find your profile: run Zotero once, then check `%APPDATA%\Zotero\Zotero\Profiles\` on Windows.
+
+3. **Run the plugin:**
+   ```bash
+   npm start
+   ```
+   (Use `npm start`, not `npm run` alone.) This builds the plugin, installs it as a temporary add-on, and launches Zotero. If you see "Server Ready!" but Zotero does not open, check that `.env` exists and the paths are correct.
 
 ### Production Build
 
